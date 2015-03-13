@@ -1,0 +1,31 @@
+<!-- INCLUDE ../../../../templates/WoWMoonclaw01/page_header.html -->
+<form method="post" action="{F_CONFIG}" name="post">
+<table width="100%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <th colspan="2">{L_GM_CONFIG_TITLE}</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap" class="row1">
+      <div align="right">
+        <label for="ignored_looter">{L_API_KEY}:</label>
+      </div>
+    </td>
+    <td nowrap="nowrap" class="row2">
+      <input type="text" name="api_key" id="api_key" size="100" maxlength="255" value="{API_KEY}" class="input" />
+      {FV_API_KEY}    </td>
+    </tr>
+  <tr>
+    <td nowrap="nowrap" class="row1">&nbsp;</td>
+    <td nowrap="nowrap" class="row2">{L_API_KEY_HELP}</td>
+    </tr>
+  <tr>
+    <th colspan="2" class="row1">
+<div style="padding:.25em;">
+    <input type="submit" name="submit" value="{L_UPDATE}" class="mainoption" />
+    <input type="reset" name="reset" value="{L_RESET}" class="liteoption" />
+</div>
+    </th>
+  </tr>
+</table>
+</form>
+<!-- INCLUDE ../../../../templates/WoWMoonclaw01/page_tail.html -->

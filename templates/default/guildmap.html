@@ -1,0 +1,50 @@
+<!-- INCLUDE ../../../../templates/default/page_header.html -->
+<!-- IF API_KEY -->
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={API_KEY}"
+      type="text/javascript"></script>
+    <script type="text/javascript">
+
+    //<![CDATA[
+
+    function load() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map"));
+		map.addControl(new GLargeMapControl());
+		map.addControl(new GMapTypeControl());
+        map.setCenter(new GLatLng(0, 0), 1);
+
+		// Creates a marker at the given point with the given number label
+		function createMarker(point, message) {
+		  var marker = new GMarker(point);
+		  GEvent.addListener(marker, "click", function() {
+			marker.openInfoWindowHtml("<span class=\"member_name\">" + message + "</span>");
+		  });
+		  return marker;
+		}
+		
+		// Add 10 markers in random locations on the map
+		var bounds = map.getBounds();
+		var southWest = bounds.getSouthWest();
+		var northEast = bounds.getNorthEast();
+		var lngSpan = northEast.lng() - southWest.lng();
+		var latSpan = northEast.lat() - southWest.lat();
+        <!-- BEGIN member_row -->
+		  var point = new GLatLng({member_row.LATITUDE},{member_row.LONGITUDE});
+		  map.addOverlay(new GMarker(point));
+		  map.addOverlay(createMarker(point, "{member_row.MEMBER}"));		  
+		<!-- END member_row -->
+      }
+    }
+
+    //]]>
+    </script>
+<!-- IF S_IS_LOGGED_IN -->
+<div style="text-align:center; padding:.25em"><a href="{U_ADD_UPDATE_LOCATION}">{L_ADD_UPDATE_LOCATION}</a></div>
+<!-- ENDIF -->
+	<div style="text-align:center">
+    	<div id="map" style="width: 725px; height: 400px;"></div>
+	</div>
+<!-- ELSE -->
+<div style="padding:1em 1em 2em 1em; text-align:center">{L_MISSING_API_KEY}</div>
+<!-- ENDIF -->
+<!-- INCLUDE ../../../../templates/default/page_tail.html -->

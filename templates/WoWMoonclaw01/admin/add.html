@@ -1,0 +1,113 @@
+<!-- INCLUDE ../../../../templates/WoWMoonclaw01/page_header.html -->
+<!-- IF API_KEY -->
+<form method="post" action="{F_CONFIG}" name="post" id="post">
+<table width="100%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <th colspan="2">{L_GM_ADD_TITLE}</th>
+  </tr>
+  <tr>
+    <td nowrap="nowrap" class="row1">
+      <div align="right">
+        <label for="member_id">{L_MEMBER}:</label>
+        </div>
+    </td>
+    <td nowrap="nowrap" class="row2">
+        <select name="member_id" id="member_id" onChange="this.form.submit()">
+        	<option value="">{L_ADD_MEMBER_MESSAGE}</option>
+		<!-- BEGIN main_member_row -->		
+        	<option value="{main_member_row.VALUE}"{main_member_row.SELECTED}>{main_member_row.OPTION}</option>
+		<!-- END main_member_row -->		
+        </select>
+        {FV_NAME}</td>
+    </tr>
+<!-- IF S_MEMBER -->
+  <tr>
+    <td nowrap="nowrap" class="row1">
+      <div align="right">{L_LATITUDE}:</div>
+    </td>
+    <td nowrap="nowrap" class="row2">
+      <input name="member_latitude" type="text" id="member_latitude" value="{LATITUDE}" size="18" maxlength="32" />
+      {FV_LATITUDE}
+    </td>
+    </tr>
+  <tr>
+    <td nowrap="nowrap" class="row1">
+      <div align="right">{L_LONGITUDE}:</div>
+    </td>
+    <td nowrap="nowrap" class="row2">
+      <input name="member_longitude" type="text" id="member_longitude" value="{LONGITUDE}" size="18" maxlength="32" />
+      {FV_LONGITUDE}
+    </td>
+  </tr>
+  <tr>
+  	<td colspan="2">
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={API_KEY}"
+      type="text/javascript"></script>
+    <script type="text/javascript">
+
+    //<![CDATA[
+
+    function load() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map"));
+		map.addControl(new GLargeMapControl());
+		map.addControl(new GMapTypeControl());
+        map.setCenter(new GLatLng(
+						document.getElementById("member_latitude").value,
+						document.getElementById("member_longitude").value), 1);
+
+		// Creates a marker at the given point with the given number label
+		function createMarker(point, message) {
+		  var marker = new GMarker(point);
+		  GEvent.addListener(marker, "click", function() {
+			marker.openInfoWindowHtml("<span class=\"member_name\">" + message + "</span>");
+		  });
+		  return marker;
+		}
+
+		// Add the crosshair marker at the centre of the map and keep a reference to it
+		var marker = new GMarker(map.getCenter(),{draggable: true});     
+		GEvent.addListener(map, "zoomend", function() {
+			map.setCenter(marker.getPoint());
+		  });
+
+		GEvent.addListener(marker, "dragstart", function() {
+			map.closeInfoWindow();
+		  });
+		GEvent.addListener(marker, "drag", function() {
+			var ctr = marker.getPoint();
+			document.getElementById("member_longitude").value = ctr.x;
+			document.getElementById("member_latitude").value = ctr.y;
+		  });
+  	       
+		GEvent.addListener(marker, "dragend", function() {
+			var ctr = marker.getPoint();
+			document.getElementById("member_longitude").value = ctr.x;
+			document.getElementById("member_latitude").value = ctr.y;
+		});
+	    map.addOverlay(marker);
+      }
+	}
+
+    //]]>
+    </script>
+	<div style="text-align:center">
+    	<div id="map" style="width: 725px; height: 400px;"></div>
+	</div>
+	</td>
+  </tr>
+  <tr>
+    <th colspan="2" class="row1">
+<div style="padding:.25em;">
+    <input type="submit" name="update" value="{L_UPDATE}" class="mainoption" />
+    <input type="reset" name="reset" value="{L_RESET}" class="liteoption" />
+</div>
+    </th>
+  </tr>
+<!-- ENDIF -->
+</table>
+</form>
+<!-- ELSE -->
+<div style="padding:1em 1em 2em 1em; text-align:center">{L_MISSING_API_KEY}</div>
+<!-- ENDIF -->
+<!-- INCLUDE ../../../../templates/WoWMoonclaw01/page_tail.html -->
